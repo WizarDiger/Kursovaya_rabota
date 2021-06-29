@@ -1,0 +1,110 @@
+CREATE TABLE "player_stats" (
+	"id" serial,
+	"gold" integer NOT NULL,
+	"score" integer NOT NULL,
+	"level_time" varchar(255) NOT NULL,
+	"amount_of_jumps" integer NOT NULL,
+	"kills" integer NOT NULL,
+	"deaths" integer NOT NULL,
+	CONSTRAINT "Player_stats_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+CREATE TABLE "player_movement_tracker" (
+	"id" serial,
+	"x" numeric NOT NULL,
+	"y" numeric NOT NULL,
+	"z" numeric NOT NULL,	
+	CONSTRAINT "player_movement_tracker_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+create function Player_movement_tracker_insert(_x numeric, _y numeric, _z numeric)
+returns int as
+$$
+begin
+insert into Player_movement_tracker(x,y,z)
+values(_x,_y,_z);
+if found then return 1;
+else return 0;
+end if;
+end 
+$$
+language plpgsql
+
+
+create function Player_stats_insert(_gold integer,_score integer,_level_time VARCHAR(255),_amount_of_jumps integer,_kills integer,_deaths integer)
+returns int as
+$$
+begin
+insert into player_stats(gold,score,level_time,amount_of_jumps,kills,deaths)
+values(_gold,_score,_level_time,_amount_of_jumps,_kills,_deaths);
+if found then return 1;
+else return 0;
+end if;
+end 
+$$
+language plpgsql
+
+
+CREATE TABLE "level_border" (
+	"id" serial,
+	"leftb" numeric NOT NULL,
+	"rightb" numeric NOT NULL,
+	"upb" numeric NOT NULL,
+	"downb" numeric NOT NULL,	
+	CONSTRAINT "level_border_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+create function level_border_insert(_leftb numeric, _rightb numeric, _upb numeric, _downb numeric)
+returns int as
+$$
+begin
+insert into level_border(leftb,rightb,upb,downb)
+values(_leftb,_rightb,_upb,_downb);
+if found then return 1;
+else return 0;
+end if;
+end 
+$$
+language plpgsql
+
+
+CREATE TABLE "level_picture" (
+	"id" serial,
+	"imgname" VARCHAR(255),
+	"img" bytea,		
+	CONSTRAINT "level_picture_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+create function level_picture_insert(_imgname VARCHAR(255),_img bytea)
+returns int as
+$$
+begin
+insert into level_picture(imgname,img)
+values(_imgname,_img);
+if found then return 1;
+else return 0;
+end if;
+end 
+$$
+language plpgsql
+
+create function player_movement_tracker_insert(_x real, _y real, _z real)
+returns int as
+$$
+begin
+insert into Player_movement_tracker(x,y,z)
+values(_x,_y,_z);
+if found then return 1;
+else return 0;
+end if;
+end 
+$$
+language plpgsql
